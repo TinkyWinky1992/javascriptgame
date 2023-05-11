@@ -1,0 +1,63 @@
+<script src = "map.js"></script>
+<script src = "player.js"></script>
+<script src = "BountieBots.js"></script>
+
+<html>
+   <body>
+      <div style = "text-align:center;">
+        <canvas id ='gameCanvas' height="480" width="800"></canvas>
+      </div>
+   </body>
+</html>
+
+
+
+<script>
+var ground_one_img = document.getElementById('ground_one');
+
+var area = document.getElementById('gameCanvas');
+var ctx = area.getContext("2d");
+
+var brick_array = new Array();
+
+var road_array = new Array();
+map();
+
+const player_one = new player(20,40);
+
+const myBot_1 = new bot(20,400);
+const myBot_2 = new bot(580, 100);
+const myBot_3 = new bot(600, 340);
+const myBot_4 = new bot(580, 220);
+const myBot_5 = new bot(400, 20);
+
+setInterval(engine, 4);
+
+function engine()
+{
+    ctx.fillStyle = "white";
+    ctx.fillRect(0, 0, 800, 480);
+    
+    for(var i = 0; i < brick_array.length; i++)
+    {
+        brick_array[i].brick_drawing();
+        
+    }
+
+    for(var i = 0; i < road_array.length; i++)
+    {
+      road_array[i].road_drawing();
+        
+    }   
+
+  myBot_1.onMove();
+  myBot_2.onMove();
+  myBot_3.onMove();
+  myBot_4.onMove();
+  myBot_5.onMove();
+
+
+  player_one.onStart();
+
+}
+</script>
