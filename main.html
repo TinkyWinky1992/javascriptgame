@@ -23,7 +23,7 @@ var brick_array = new Array();
 var road_array = new Array();
 map();
 
-var player = new player(20,40);
+const player_one = new player(20,40);
 
 const myBot_1 = new bot(20,400);
 const myBot_2 = new bot(580, 100);
@@ -37,7 +37,7 @@ function engine()
 {
     ctx.fillStyle = "white";
     ctx.fillRect(0, 0, 800, 480);
-
+    
     for(var i = 0; i < brick_array.length; i++)
     {
         brick_array[i].brick_drawing();
@@ -48,7 +48,7 @@ function engine()
     {
       road_array[i].road_drawing();
         
-    }
+    }   
 
   myBot_1.onMove();
   myBot_2.onMove();
@@ -57,6 +57,7 @@ function engine()
   myBot_5.onMove();
 
 
-  player.start();
+  player_one.onStart();
+
 }
 </script>
