@@ -7,15 +7,17 @@ class player
     #Height;
 
     direction;
+    area;
 
-    constructor(x, y)
+    constructor(x, y, map)
     {
         this.#PosX = x;
         this.#PosY = y;
 
-        this.#wdith = 15;
         this.#Height = 15;
+        this.#wdith = 15;
 
+        this.area = map;
         this.direction = "stop";
     }
 
@@ -27,29 +29,61 @@ class player
 
     }
 
+    
     //checking collisions between the bricks and the player
-    #check_collistion(dx, dy)
+    check_collistion(dx, dy) 
     {
-        var brick = brick_array[i];
-         
-           
+        var hasCollision = false;
+        var brickArray = this.area.getBrickArray();
         // Check collision with each brick in the array
-        for (var i = 0; i < brick_array.length; i++) {
-            var brick = brick_array[i];
-            
-          
-            // Check if this collides with brick
-            if (this.#PosX + dx < brick.x + brick.w &&
-                this.#PosX + this.width + dx > brick.x &&
-                this.#PosY + dy < brick.y + brick.h &&
-                this.height + this.#PosY + dy > brick.y) {
-          
-            // There is a collision
-            return true;
+        for (var i = 0; i < brickArray.length; i++) {
+            var brick = brickArray[i];
+        
+            // Check if player collides with brick
+            if (this.#PosX + dx < brick.PosX + brick.width &&
+                this.#PosX + this.#wdith + dx > brick.PosX &&
+                this.#PosY + dy < brick.PosY + brick.height &&
+                this.#Height + this.#PosY + dy > brick.PosY) {
+  
+                // There is a collision
+                hasCollision = true;
+                break;
+            }
+    }
+  
+    if (hasCollision) 
+        this.direction = "stop";
+
+
+
+    else {
+      // No collision, check if the next position would cause a collision
+      var nextX = this.#PosX + dx;
+      var nextY = this.#PosY + dy;
+  
+      var canMove = true;
+      for (var i = 0; i < brickArray.length; i++) {
+            var brick = brickArray[i];
+  
+
+            if (nextX < brick.PosX + brick.width &&
+                nextX + this.#wdith > brick.PosX &&
+                nextY < brick.PosY + brick.height &&
+                this.#Height + nextY > brick.PosY) {
+  
+                // There is a collision, don't move
+                canMove = false;
+                break;
             }
         }
-    }    
-
+  
+      if (canMove) 
+        {
+            this.#PosX = nextX;
+            this.#PosY = nextY;
+        }
+    }
+  }
 
     //updating positions of the player and moving the player deppend of the state that the player is in it
     
@@ -81,15 +115,7 @@ class player
                 break;
 
         }
-        if(!this.#check_collistion)
-        {
-            this.#PosX +=dx;
-            this.#PosY += dy;
-        }
-        else
-            this.direction = "stop";
-
-        console.log(this.direction);
+        this.check_collistion(dx, dy); 
         this.#draw_player();
     }
 
@@ -99,7 +125,8 @@ class player
 
     onStart()
     {
-        document.addEventListener("keydown", (event)=> {
+
+        document.addEventListener('keydown', (event) => {
 
             if( event.key === "w" || event.key === "ArrowUp")
             {
@@ -137,6 +164,7 @@ class player
 
         this.#update();
     }
+    
     
   
 }

@@ -1,5 +1,5 @@
-<script src = "map.js"></script>
 <script src = "player.js"></script>
+<script src = "MapGame.js"></script>
 <script src = "BountieBots.js"></script>
 
 <html>
@@ -18,18 +18,18 @@ var ground_one_img = document.getElementById('ground_one');
 var area = document.getElementById('gameCanvas');
 var ctx = area.getContext("2d");
 
-var brick_array = new Array();
+const map_game = new MapGame();
 
-var road_array = new Array();
-map();
+var arrayBrick = map_game.getBrickArray();
+var arrayRoad = map_game.getRoadArray();
 
-const player_one = new player(20,40);
+const player_one = new player( 20, 40, map_game);
 
-const myBot_1 = new bot(20,400);
-const myBot_2 = new bot(580, 100);
-const myBot_3 = new bot(600, 340);
-const myBot_4 = new bot(580, 220);
-const myBot_5 = new bot(400, 20);
+const myBot_1 = new bot(20, 400, map_game);
+const myBot_2 = new bot(580, 100, map_game);
+const myBot_3 = new bot(600, 340, map_game);
+const myBot_4 = new bot(580, 220, map_game);
+const myBot_5 = new bot(400, 20, map_game);
 
 setInterval(engine, 4);
 
@@ -38,16 +38,14 @@ function engine()
     ctx.fillStyle = "white";
     ctx.fillRect(0, 0, 800, 480);
     
-    for(var i = 0; i < brick_array.length; i++)
+    for(var i = 0; i < arrayBrick.length; i++)
     {
-        brick_array[i].brick_drawing();
-        
+      arrayBrick[i].brick_drawing();  
     }
 
-    for(var i = 0; i < road_array.length; i++)
+    for(var i = 0; i < arrayRoad.length; i++)
     {
-      road_array[i].road_drawing();
-        
+      arrayRoad[i].road_drawing();
     }   
 
   myBot_1.onMove();
