@@ -1,4 +1,5 @@
 class Finder{
+    
     #bot;
     #road_array;
 
@@ -64,7 +65,9 @@ class Finder{
 
 export class bot
 {
-    SPEED = 2;
+    DataTime = new Date(); 
+    PLAYER_METERS_DISTANCE_FOR_SECAND = 5;
+    SPEED = 1.5;
 
     #PosX;
     #PosY;

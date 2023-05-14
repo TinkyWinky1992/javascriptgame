@@ -1,0 +1,7 @@
+#--------Problems-------#
+ 1. i need to find way to create communicate class between the player and the bot with clean code
+  1.1 this purpose of that class is to create a good path with a star algorithm for the bot
+
+    --- the start point is the bot and the end point is the most far away point of the player.
+    --- the class need to be updated with the player far away point to update every time the path.
+    
