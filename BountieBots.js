@@ -2,8 +2,7 @@ class Finder{
     #bot;
     #road_array;
 
-    botDistancePoints =
-    {
+    botDistancePoints = {
         road:'',
         distancebot:'',
         botDistancePoints_array: []
@@ -42,19 +41,18 @@ class Finder{
                     
             }
     
-            this.botDistancePoints.botDistancePoints_array.sort();
-            var max = this.botDistancePoints.botDistancePoints_array[ this.botDistancePoints.botDistancePoints_array.length];
-            console.log(max);
         }
     }
 
-    pathFinder = function()
+    pathFinder()
     {
-        var start_path_x = bot.x;
-        var start_path_y = bot.y;
 
-        var end_path_x = brick_point.x;
-        var end_path_y = brick_point.y;
+        this.botDistancePoints.botDistancePoints_array.sort();
+        let max_point = this.botDistancePoints.botDistancePoints_array[ this.botDistancePoints.botDistancePoints_array.length];
+
+
+
+ 
 
         // f- will be the far away distance between the bot and the player
     }
@@ -64,8 +62,10 @@ class Finder{
 
 
 
-class bot
+export class bot
 {
+    SPEED = 2;
+
     #PosX;
     #PosY;
 
@@ -90,9 +90,9 @@ class bot
 
     }
 
-    draw_bot()
+    draw_bot(ctx)
     {
-      
+        this.#onMove();
         ctx.beginPath();
         ctx.fillStyle = "blue";
         ctx.fillRect(this.#PosX, this.#PosY, this.width, this.height);
@@ -101,7 +101,7 @@ class bot
 
 
      //updating positions of the bot and moving the bot deppend of the state that the bot is in it
-     onMove()
+     #onMove()
      {
     
          var dx = 0;
@@ -111,22 +111,22 @@ class bot
          {
              case "up":
  
-                 dy = -0.5;
+                 dy = - this.SPEED;
                  break;
  
              case "down":
                  
-                 dy = +0.5;
+                 dy = +this.SPEED;
                  break;
              
              case "left":
  
-                 dx = -0.5;
+                 dx = - this.SPEED;
                  break;
  
              case "right":
  
-                 dx = 0.5;
+                 dx = + this.SPEED;
                  break;
  
          }
@@ -138,10 +138,28 @@ class bot
              this.#PosX += dx;
              this.#PosY += dy;
          }
-         this.draw_bot();
          
      }
-
+    
+    getCollistionRoad(dx, dy)
+     {
+        var RoadArray = this.area.getRoadArray();
+           
+         // Check collision with each brick in the array
+         for (var i = 0; i < RoadArray.length; i++) {
+             var road = RoadArray[i];
+             
+           
+             // Check if this collides with brick
+             if (this.#PosX + dx < road.PosX + road.width &&
+                 this.#PosX + this.width + dx > road.PosX &&
+                 this.#PosY + dy < road.PosY + road.height &&
+                 this.height + this.#PosY + dy > road.PosY) {
+           
+                    return road;
+             }
+         }
+     }
 
      check_collistion(dx, dy)
      {

@@ -1,56 +1,7 @@
-class road
-{
-    PosY;
-    PosX;
+import {road} from './RoadMap.js';
+import { Brick } from './brickMap.js';
 
-    width;
-    height;
-
-    constructor(x, y)
-    {
-        this.PosX = x;
-        this.PosY = y;
-
-        this.width = 20;
-        this.height = 20;
-    }
-
-    road_drawing()
-    {
-        ctx.fillStyle = "white";
-        ctx.fillRect(this.PosX ,  this.PosY, this.width, this.height);
-    }
-}
-
-
-class Brick
-{
-    PosY;
-    PosX;
-
-    width;
-    height;
-
-    constructor(x, y)
-    {
-        this.PosX = x;
-        this.PosY = y;
-
-        this.width = 20;
-        this.height = 20;
-    }
-
-    brick_drawing()
-    {
-        ctx.fillStyle = "black";
-        ctx.fillRect(this.PosX ,  this.PosY, this.width, this.height);
-    }
-} 
-
-
-
-
-class MapGame
+export class MapGame
 {
 
     brick_array;
@@ -74,7 +25,7 @@ class MapGame
             1,0,1,1,1,1,1,1,1,1,1,1,0,1,1,1,1,1,1,1,1,1,1,1,1,1,0,1,1,0,1,1,1,1,1,1,1,1,0,1,
             1,0,1,1,1,1,1,1,1,1,1,1,0,1,1,1,1,1,1,1,1,1,1,1,1,1,0,1,1,0,1,1,1,1,1,1,1,1,0,1,
             1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
-            1,0,1,0,1,1,1,1,1,1,1,1,1,1,1,0,1,1,1,1,1,0,1,1,1,1,1,1,1,1,0,1,1,1,1,1,1,1,0,1,
+            1,0,1,0,1,1,1,1,1,1,1,1,1,1,1,0,1,1,1,1,1,0,1,1,1,1,1,1,1,1,0,1,1,1,1,1,1,1,1,1,
             1,0,0,0,1,1,1,1,1,1,1,1,1,1,1,0,1,1,1,1,1,0,1,1,1,1,1,1,1,1,0,1,1,1,1,1,1,1,0,1,
             1,0,1,1,1,1,1,1,1,1,1,1,1,1,1,0,1,1,1,1,1,0,1,1,1,1,1,1,1,1,0,1,1,1,1,1,1,1,0,1,
             1,0,1,1,1,1,1,1,1,1,1,1,1,1,1,0,1,1,1,1,1,0,1,1,1,1,1,1,1,1,0,1,1,1,1,1,1,1,0,1,

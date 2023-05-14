@@ -1,5 +1,6 @@
-class player
+export class player
 {
+    SPEED = 1.5;
     #PosX;
     #PosY;
     
@@ -8,6 +9,7 @@ class player
 
     direction;
     area;
+
 
     constructor(x, y, map)
     {
@@ -21,8 +23,9 @@ class player
         this.direction = "stop";
     }
 
-    #draw_player()
+    draw_player(ctx)
     {
+        this.#OnListen();
         ctx.beginPath();
         ctx.fillStyle = "red";
         ctx.fillRect(this.#PosX, this.#PosY, this.#Height, this.#wdith);
@@ -96,34 +99,33 @@ class player
         {
             case "up":
 
-                dy = -0.5;
+                dy = - this.SPEED;
                 break;
 
             case "down":
                 
-                dy= +0.5
+                dy= + this.SPEED;
                 break;
             
             case "left":
 
-                dx = -0.5;
+                dx = -this.SPEED;
                 break;
 
             case "right":
 
-                dx = 0.5;
+                dx = + this.SPEED;
                 break;
 
         }
         this.check_collistion(dx, dy); 
-        this.#draw_player();
     }
 
 
     //this function listen to every keybind that needed to check if the player press on it
     //then change the direcation state of the player
 
-    onStart()
+    #OnListen()
     {
 
         document.addEventListener('keydown', (event) => {
