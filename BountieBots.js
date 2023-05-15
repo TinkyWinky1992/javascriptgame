@@ -32,6 +32,7 @@ class Finder{
                 close_points.push(distance);
             
         }
+        return close_points;
     }
     
 
@@ -50,33 +51,43 @@ class Finder{
     
     }
 
-    #checkDistance(road)
+    #checkminDistance(array)
     {
-        let distanceX = Math.pow(this.#bot.PosX + road.PosX, 2);
-        let distanceY = Math.pow(this.#bot.PosY + road.PosY, 2);
-        return Math.sqrt( distanceX - distanceY );
+        min = array[0];
+        for(var i = 0; i < array.length; i++)
+            if(min > array[i])
+                min = array[i];
+        return min
     }
 
     pathFinder()
-    {
-        close_list = [];
+    {   
         end_point = this.#farPoint;
+        open_list =this.#closePointsBot();
+        close_list = [];
 
-        let i = 0;
-        start_point =this.#ArrayDistanceBot[i++];
+        start_point = this.#checkminDistance(open_list);
         close_list.push(start_point);
 
-        
-        
         while(start_point != end_point)
         {
+            open_list = this.#closePointsBot();
+            start_point = this.#checkminDistance(open_list);
 
 
         }
+    }
 
-        
+    PathAlgoritm(start_point, end_point, open_list, before_list)
+    {
+        if(start_point == end_point)
+            return 0;
 
-        // f- will be the far away distance between the bot and the player
+        start_point = this.#checkminDistance(open_list)
+        open_list = this.#closePointsBot();
+
+        this.PathAlgoritm(start_point, end_point, open_list,before_list)
+
     }
 
 }
