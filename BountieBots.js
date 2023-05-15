@@ -5,7 +5,7 @@ class Finder{
     #road_array;
     #farPoint;
 
-    #ArrayDistanceBot = [];
+    
 
 
     constructor (temp_bot, temp_player, Temproad_array)
@@ -15,29 +15,25 @@ class Finder{
         this.#road_array = Temproad_array;
         this.#farPoint = 0;
         this.#farPointPlayer();
-        this.#farPointsBot();
     }
 
     
-    #farPointsBot()
+    #closePointsBot()
     {
+        close_points = []
+        for(var i = 0; i < this.#road_array.length; i++)
+        {
+            
+            let distanceX = Math.pow(this.#bot.PosX + road.PosX, 2);
+            let distanceY = Math.pow(this.#bot.PosY + road.PosY, 2);
 
-            var distancebot = 0;
-    
-            for(var i = 0; i < this.#road_array.length; i++)
-            {
-                var road= this.#road_array[i];
-    
-                let distanceX = Math.pow(this.#bot.PosX + road.PosX, 2);
-                let distanceY = Math.pow(this.#bot.PosY + road.PosY, 2);
-
-                distancebot = Math.sqrt(distanceX - distanceY);
-                this.#ArrayDistanceBot.push(distancebot);
-                
-            }
-            this.#ArrayDistanceBot.sort();
-        
+            let distance = Math.sqrt(distanceX - distanceY);
+            if(distance <= 40)
+                close_points.push(distance);
+            
+        }
     }
+    
 
     #farPointPlayer()
     {
@@ -54,7 +50,7 @@ class Finder{
     
     }
 
-    checkDistance(road)
+    #checkDistance(road)
     {
         let distanceX = Math.pow(this.#bot.PosX + road.PosX, 2);
         let distanceY = Math.pow(this.#bot.PosY + road.PosY, 2);
@@ -63,7 +59,6 @@ class Finder{
 
     pathFinder()
     {
-        open_list = this.#road_array;
         close_list = [];
         end_point = this.#farPoint;
 
@@ -75,12 +70,8 @@ class Finder{
         
         while(start_point != end_point)
         {
-            start_point = this.#ArrayDistanceBot[i]
-            //check something
-            if(start_point > close_list[close_list.length])
-                start_point = this.#ArrayDistanceBot[i++];
-            
-            close_list.push(start_point);
+
+
         }
 
         
