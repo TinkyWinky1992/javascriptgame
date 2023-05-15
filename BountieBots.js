@@ -1,59 +1,89 @@
 class Finder{
     
     #bot;
+    #player
     #road_array;
+    #farPoint;
 
-    botDistancePoints = {
-        road:'',
-        distancebot:'',
-        botDistancePoints_array: []
-    };
+    #ArrayDistanceBot = [];
 
 
-    constructor (temp_bot, Temproad_array)
+    constructor (temp_bot, temp_player, Temproad_array)
     {
+        this.#player = temp_player;
         this.#bot = temp_bot;
         this.#road_array = Temproad_array;
-        this.#findFarPoints();
-
-    
-        var insertbotBrick_distance = function(road, distance)
-        {
-            this.road = road;
-            this.distance = distance;
-        }
-    
-        this.path =[];
+        this.#farPoint = 0;
+        this.#farPointPlayer();
+        this.#farPointsBot();
     }
 
     
-    #findFarPoints()
+    #farPointsBot()
     {
-        this.findFarPoints = function()
-        {
+
             var distancebot = 0;
     
             for(var i = 0; i < this.#road_array.length; i++)
             {
                 var road= this.#road_array[i];
     
-                distancebot = Math.sqrt(Math.pow(this.#bot.PosX + road.PosX, 2) -  Math.pow(this.#bot.PosY + road.PosY, 2));
-                this.botDistancePoints.botDistancePoints_array.push(new insertbotBrick_distance(road, distancebot));
-                    
+                let distanceX = Math.pow(this.#bot.PosX + road.PosX, 2);
+                let distanceY = Math.pow(this.#bot.PosY + road.PosY, 2);
+
+                distancebot = Math.sqrt(distanceX - distanceY);
+                this.#ArrayDistanceBot.push(distancebot);
+                
             }
-    
+            this.#ArrayDistanceBot.sort();
+        
+    }
+
+    #farPointPlayer()
+    {
+        let distancePlayer = 0;
+        for(var i = 0; i<this.#road_array.length; i++)
+        {
+            let distanceX = Math.pow(this.#player.PosX + road.PosX, 2);
+            let distanceY = Math.pow(this.#player.PosY + road.PosY, 2);
+
+            distancePlayer = Math.sqrt(distanceX - distanceY); 
+            if(this.#farPoint < distancePlayer)
+                this.#farPoint = distancePlayer;
         }
+    
+    }
+
+    checkDistance(road)
+    {
+        let distanceX = Math.pow(this.#bot.PosX + road.PosX, 2);
+        let distanceY = Math.pow(this.#bot.PosY + road.PosY, 2);
+        return Math.sqrt( distanceX - distanceY );
     }
 
     pathFinder()
     {
+        open_list = this.#road_array;
+        close_list = [];
+        end_point = this.#farPoint;
 
-        this.botDistancePoints.botDistancePoints_array.sort();
-        let max_point = this.botDistancePoints.botDistancePoints_array[ this.botDistancePoints.botDistancePoints_array.length];
+        let i = 0;
+        start_point =this.#ArrayDistanceBot[i++];
+        close_list.push(start_point);
 
+        
+        
+        while(start_point != end_point)
+        {
+            start_point = this.#ArrayDistanceBot[i]
+            //check something
+            if(start_point > close_list[close_list.length])
+                start_point = this.#ArrayDistanceBot[i++];
+            
+            close_list.push(start_point);
+        }
 
-
- 
+        
 
         // f- will be the far away distance between the bot and the player
     }
