@@ -14,7 +14,6 @@ class Finder{
         this.#bot = temp_bot;
         this.#road_array = Temproad_array;
         this.#farPoint = 0;
-        this.#farPointPlayer();
     }
 
     
@@ -23,13 +22,13 @@ class Finder{
         close_points = []
         for(var i = 0; i < this.#road_array.length; i++)
         {
-            
+            let road = this.#road_array[i]
             let distanceX = Math.pow(this.#bot.PosX + road.PosX, 2);
             let distanceY = Math.pow(this.#bot.PosY + road.PosY, 2);
 
             let distance = Math.sqrt(distanceX - distanceY);
             if(distance <= 40)
-                close_points.push(distance);
+                close_points.push(road);
             
         }
         return close_points;
@@ -50,6 +49,15 @@ class Finder{
         }
     
     }
+    #checkDistance(road)
+    {
+        let distanceX = Math.pow(this.#bot.PosX + road.PosX, 2);
+        let distanceY = Math.pow(this.#bot.PosY + road.PosY, 2);
+
+        let distance = Math.sqrt(distanceX - distanceY);
+
+        return distance;
+    }
 
     #checkminDistance(array)
     {
@@ -57,37 +65,45 @@ class Finder{
         for(var i = 0; i < array.length; i++)
             if(min > array[i])
                 min = array[i];
+                
         return min
     }
 
-    pathFinder()
-    {   
-        end_point = this.#farPoint;
-        open_list =this.#closePointsBot();
-        close_list = [];
 
-        start_point = this.#checkminDistance(open_list);
-        close_list.push(start_point);
+    /*
+    main idea: with this algoritm we will find the best way to find the x point that we want to go
+    short exmplain: with recursion we use mathod to search good path for the bot.
 
-        while(start_point != end_point)
-        {
+        1. we need to check if the bot in the point allready then he exit.
+        2. we need to check if the bot go far from the point then go back and check the other dircation 
+            that he can go.
+        2.1. if he didn't find good point that make the bot closer to the end point then
+            choose one of the optinal dirction can  keep the recursion as usual.
+
+
+    */
+    #PathAlgoritm(start_point, end_point, open_list)
+    {
+
+        if(this.#checkDistance(end_point) > 40){
+            start_point = this.#checkminDistance(open_list)
             open_list = this.#closePointsBot();
-            start_point = this.#checkminDistance(open_list);
-
-
+            this.PathAlgoritm(start_point, end_point, open_list);
         }
+
+        let path = [];
+        path.push(start_point);
+        return path;
+        
+
     }
 
-    PathAlgoritm(start_point, end_point, open_list, before_list)
+    update()
     {
-        if(start_point == end_point)
-            return 0;
+        this.#farPointPlayer();
 
-        start_point = this.#checkminDistance(open_list)
-        open_list = this.#closePointsBot();
-
-        this.PathAlgoritm(start_point, end_point, open_list,before_list)
-
+        let open_list = this.#closePointsBot();
+        this.#PathAlgoritm(open_list[0], this.#farPointPlayer(), open_list);
     }
 
 }
