@@ -1,8 +1,8 @@
 export class player
 {
     SPEED = 1.5;
-    #PosX;
-    #PosY;
+    PosX;
+    PosY;
     
     #wdith;
     #Height;
@@ -13,8 +13,8 @@ export class player
 
     constructor(x, y, map)
     {
-        this.#PosX = x;
-        this.#PosY = y;
+        this.PosX = x;
+        this.PosY = y;
 
         this.#Height = 15;
         this.#wdith = 15;
@@ -29,7 +29,7 @@ export class player
         this.#OnListen();
         ctx.beginPath();
         ctx.fillStyle = "red";
-        ctx.fillRect(this.#PosX, this.#PosY, this.#Height, this.#wdith);
+        ctx.fillRect(this.PosX, this.PosY, this.#Height, this.#wdith);
 
     }
 
@@ -44,10 +44,10 @@ export class player
             var brick = brickArray[i];
         
             // Check if player collides with brick
-            if (this.#PosX + dx < brick.PosX + brick.width &&
-                this.#PosX + this.#wdith + dx > brick.PosX &&
-                this.#PosY + dy < brick.PosY + brick.height &&
-                this.#Height + this.#PosY + dy > brick.PosY) {
+            if (this.PosX + dx < brick.PosX + brick.width &&
+                this.PosX + this.#wdith + dx > brick.PosX &&
+                this.PosY + dy < brick.PosY + brick.height &&
+                this.Height + this.PosY + dy > brick.PosY) {
   
                 // There is a collision
                 hasCollision = true;
@@ -62,8 +62,8 @@ export class player
 
     else {
       // No collision, check if the next position would cause a collision
-      var nextX = this.#PosX + dx;
-      var nextY = this.#PosY + dy;
+      var nextX = this.PosX + dx;
+      var nextY = this.PosY + dy;
   
       var canMove = true;
       for (var i = 0; i < brickArray.length; i++) {
@@ -83,8 +83,8 @@ export class player
   
       if (canMove) 
         {
-            this.#PosX = nextX;
-            this.#PosY = nextY;
+            this.PosX = nextX;
+            this.PosY = nextY;
         }
     }
   }
