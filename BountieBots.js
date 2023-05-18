@@ -1,194 +1,9 @@
-class Finder{
-    
-    #bot;
-    #player
-    #road_array;
-
-    
-
-
-    constructor (temp_bot, temp_player, Temproad_array)
-    {
-        this.#player = temp_player;
-        
-        this.#bot = temp_bot;
-        this.#road_array = Temproad_array;
-    }
-
-    farPointPlayer()
-    {
-        let distancePlayer = 0;
-        let distanceX = 0;
-        let distanceY = 0;
-        let farPoint = 0;
-        let farDistancePoint = 0;
-
-        for(var i = 0; i<this.#road_array.length; i++)
-        {
-            let road = this.#road_array[i];
-           
-            distanceX = Math.pow(this.#player.PosX - road.PosX, 2);
-            distanceY = Math.pow(this.#player.PosY - road.PosY, 2);
-
-            distancePlayer = Math.sqrt(distanceX + distanceY); 
-            
-            if(farDistancePoint < distancePlayer )
-            {
-                farDistancePoint = distancePlayer;
-                farPoint = road;
-                
-            }
-        }
-                   
-        return farPoint;
-    }
-    
-    checkDistance(sourcePosX, sourcePosY, destinationPosX, destinationPosY)
-    {
-        let distanceX = Math.pow(sourcePosX - destinationPosX, 2);
-        let distanceY = Math.pow(sourcePosY -  destinationPosY, 2);
-
-        let distance = Math.sqrt(distanceX + distanceY);
-
-        return distance;
-    }
-
-
-    closePointsBot(sourcePosX, sourcePosY) {
-        let close_points = [];
-        let distance = 0;
-      
-        for (let i = 0; i < this.#road_array.length; i++) {
-          let road = this.#road_array[i];
-          distance = this.checkDistance(sourcePosX, sourcePosY, road.PosX, road.PosY);
-            
-          if (distance <= 20) 
-          {
-            close_points.push(road);  
-          }
-        }
-        
-        return close_points;
-      }
-    
-
-      checkminDistance(start_pointPosX, start_pointPosY, array) {
-
-        array.sort();
-        array.splice(0,1)
-        let Current_road = array[0];
-        return Current_road;
-        }
-
-
-    /*
-    main idea: with this algoritm we will find the best way to find the x point that we want to go
-    short exmplain: with recursion we use mathod to search good path for the bot.
-
-        1. we need to check if the bot in the point allready then he exit.
-        2. we need to check if the bot go far from the point then go back and check the other dircation 
-            that he can go.
-        2.1. if he didn't find good point that make the bot closer to the end point then
-            choose one of the optinal dirction can  keep the recursion as usual.
-
-
-    */
-    PathAlgorithm() 
-    {
-        let openList = [];
-        let closeList = [];
-                            
-        let end_point = this.farPointPlayer();
-        let start_point = { ...this.#bot }; // Initial start point is the bot's current position
-                            
-        openList.push(start_point);
-                            
-        while (openList.length > 0) 
-        {
-            // Find the point with the lowest distance from the start point
-            let currentIndex = 0;
-
-            for (let i = 1; i < openList.length; i++) {
-                if (openList[i].distance < openList[currentIndex].distance) 
-                {
-                    currentIndex = i;
-                }
-            }
-                            
-            let currentPoint = openList[currentIndex];
-                            
-            // Check if the current point is the end point
-            if (currentPoint.PosX === end_point.PosX && currentPoint.PosY === end_point.PosY) 
-            {
-
-                // Reconstruct the path
-                let path = [];
-                let current = currentPoint;
-
-                while (current !== start_point) 
-                {
-                    path.push(current);
-                    current = current.parent;
-
-                }
-                path.push(start_point);
-                path.reverse();
-                return path;
-            }
-                            
-            // Remove the current point from the open list
-            openList.splice(currentIndex, 1);
-            // Add the current point to the closed list
-            closeList.push(currentPoint);
-                            
-            // Generate neighbors
-            let neighbors = this.closePointsBot(currentPoint.PosX, currentPoint.PosY);
-                            
-            for (let i = 0; i < neighbors.length; i++) 
-            {
-                let neighbor = neighbors[i];
-                            
-                // Check if the neighbor is in the closed list
-                if (closeList.find((p) => p.PosX === neighbor.PosX && p.PosY === neighbor.PosY)) 
-                    continue;
-                                
-                            
-                // Calculate the distance from start to neighbor
-                let distance = currentPoint.distance + this.checkDistance(currentPoint.PosX, currentPoint.PosY, neighbor.PosX, neighbor.PosY);
-                            
-                // Check if the neighbor is already in the open list
-                let index = openList.findIndex((p) => p.PosX === neighbor.PosX && p.PosY === neighbor.PosY);
-                if (index !== -1) 
-                {
-                    // If the new distance is lower, update the neighbor's distance and parent
-                    if (distance < openList[index].distance) 
-                    {
-                        openList[index].distance = distance;
-                        openList[index].parent = currentPoint;
-                    }
-                }
-
-                else 
-                {
-                    // Add the neighbor to the open list
-                    neighbor.distance = distance;
-                    neighbor.parent = currentPoint;
-                    openList.push(neighbor);
-                }
-            }
-        }
-                            
-        // No path found
-        return [];
-    }
-              
-        
-    
-
-}   
+import { Finder } from "./Paths.js";
+import { dircationPath } from "./DirectionPath.js";
 
 export class bot
 {
+   
     SPEED = 1.5;
 
     PosX;
@@ -232,126 +47,110 @@ export class bot
      //updating positions of the bot and moving the bot deppend of the state that the bot is in it
      #onMove()
      {
-       
         let path = new Array();
-        if(path.length == 0)
-        var dx = 0;
-        var dy = 0;
-        var direction = "";
-        let RoadDirection = new Array();
-
+        let RoadDirection = [];
         path = this.#pathBot.PathAlgorithm();
-        RoadDirection = this.RoadDirection(path);
-       
-        if (path.length === 0) {
-          // Handle the case when no path is found
-          return;
-        }
-
+        console.log(path);
         
-        
-        
-        console.log(RoadDirection);
-        for(var i = 0; i < RoadDirection.length; i++)
+        if(path.length != 0)
         {
+            var dx = 0;
+            var dy = 0;
+            //RoadDirection = this.RoadDirection(path);
             
-                
-            direction = RoadDirection[i];
-            
-            if(direction != null)
+            /*
+            for(var i = 0; i < RoadDirection.length; i++)
+           
             {
-                 switch(direction)
-                {
-                    case "up":
-    
-                        dy = - this.SPEED;
-                        break;
-    
-                    case "down":
-                    
-                        dy = +this.SPEED;
-                        break;
-                
-                    case "left":
-    
-                        dx = - this.SPEED;
-                        break;
-    
-                    case "right":
-                    
-                        dx = + this.SPEED;
-                        break;
-    
-            }
-        }
 
-    // Check collision with bricks
-   
-        this.PosX += dx;
-        this.PosY += dy;
-      
+
+                var diractionPoint = RoadDirection[i];
+                var direction = diractionPoint.Diraction_str;
+                var road = diractionPoint.Road;
+                
+                if(direction != null)
+                {
+                    
+                    
+                     switch(direction)
+                    {
+                        
+                        case "up":
         
+                            dy = - this.SPEED;
+                            break;
+        
+                        case "down":
+                        
+                            dy = +this.SPEED;
+                            break;
+                    
+                        case "left":
+        
+                            dx = - this.SPEED;
+                            break;
+        
+                        case "right":
+                            
+                            dx = + this.SPEED;
+                            break;
+        
+                    }
+                }
+                    */
+                    path.forEach(element => {
+                        dx = element.PosX;
+                        dy = element.PosY;
+                    });
+
         }
     }
     
-    check_collistion(dx, dy)
-     {
-        var brickArray = this.area.getBrickArray()
-           
-         // Check collision with each brick in the array
-         for (var i = 0; i < brickArray.length; i++) {
-             var brick = brickArray[i];
-             
-           
-             // Check if this collides with brick
-             if (this.PosX + dx < brick.PosX + brick.width &&
-                 this.PosX + this.width + dx > brick.PosX &&
-                 this.PosY + dy < brick.PosY + brick.height &&
-                 this.height + this.PosY + dy > brick.PosY) {
-           
-             // There is a collision
-             return true;
-             }
-         }
-     }
+
      
  
     RoadDirection(Road_path) 
     {
 
-        var directionArray = [];
+        let directionArray = [];
         for (var i = 0; i < Road_path.length; i++) {
           var road = Road_path[i];
+          let diractionPoint = new dircationPath();   
+          
           if(road != null)
           {
-            if (road.PosX > this.PosX + this.width) 
-                directionArray.push("right");
+        
+            if (road.PosX > this.PosX + this.width)
+                diractionPoint = new dircationPath("right",road);
 
             else if (road.PosX + road.width < this.PosX) 
-                directionArray.push("left");
+                diractionPoint = new dircationPath("left", road);
 
             else if (road.PosY > this.PosY + this.height) 
-                directionArray.push("down");
+                diractionPoint = new dircationPath("left", road);
 
             else if (road.PosY + road.heigh < this.PosY) 
-                directionArray.push("up");
+                diractionPoint = new dircationPath("up", road);
           }
-
-
+          directionArray.push(diractionPoint);
+         
         }
             
         return directionArray;
     
     }
 
+    check_collistion(road, dx, dy)
+    {
+            // Check if this collides with brick
+            if (this.PosX + dx < road.PosX + road.width/2 &&
+                this.PosX + this.width + dx > road.PosX &&
+                this.PosY + dy < road.PosY + road.height/2 &&
+                this.height + this.PosY + dy > road.PosY) {
+          
+            // There is a collision
+            return true;
+        }
+    }
 }
 
-/*
-    the main problem with this class: 
-
-        1. we need to find a smurt and good path for the bot
-            1.2 how we find the best path to the game, what do i what the main goal of the path?
-
-            ANSWER:
-                
-*/

@@ -14,7 +14,7 @@ let map_game = new MapGame();
 let arrayBrick =  map_game.getBrickArray();
 let arrayRoad =   map_game.getRoadArray();
 
-let player_one = new player( 760, 390, map_game);
+let player_one = new player( 40, 20, map_game);
 
 let MyBot_array = [];
 MyBot_array.push(new bot(20, 400, map_game, player_one));
