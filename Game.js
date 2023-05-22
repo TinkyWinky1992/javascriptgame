@@ -18,10 +18,10 @@ let player_one = new player( 40, 20, map_game);
 
 let MyBot_array = [];
 MyBot_array.push(new bot(20, 400, map_game, player_one));
-//MyBot_array.push(new bot(580, 100, map_game, player_one));
-//MyBot_array.push(new bot(600, 340,  map_game, player_one));
-//MyBot_array.push(new bot(580, 220, map_game, player_one));
-//MyBot_array.push(new bot(400, 20, map_game, player_one));
+MyBot_array.push(new bot(580, 100, map_game, player_one));
+MyBot_array.push(new bot(600, 340,  map_game, player_one));
+MyBot_array.push(new bot(580, 220, map_game, player_one));
+MyBot_array.push(new bot(400, 20, map_game, player_one));
 
 
 

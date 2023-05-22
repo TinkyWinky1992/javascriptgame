@@ -21,7 +21,6 @@ export class player
 
         this.area = map;
         this.direction = "stop";
-        console.log(this.area.getRoadArray());
     }
 
     draw_player(ctx)

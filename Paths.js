@@ -3,13 +3,16 @@ export class Finder{
     #bot;
     #player
     #road_array;
+    #birck_array;
 
-    constructor (temp_bot, temp_player, Temproad_array)
+    constructor (temp_bot, temp_player, Temproad_array, temp_bricks)
     {
         this.#player = temp_player;
         
         this.#bot = temp_bot;
         this.#road_array = Temproad_array;
+        this.#birck_array = temp_bricks;
+        
     }
 
 
@@ -79,6 +82,28 @@ export class Finder{
         return Current_road;
         }
 
+        /*
+        check_collistion(point ,dx, dy) 
+        {
+            var brickArray = this.#birck_array();
+            // Check collision with each brick in the array
+            for (var i = 0; i < brickArray.length; i++) {
+                var brick = brickArray[i];
+            
+                // Check if player collides with brick
+                if (this.PosX + dx < brick.PosX + brick.width &&
+                    this.PosX + this.#wdith + dx > brick.PosX &&
+                    this.PosY + dy < brick.PosY + brick.height &&
+                    this.Height + this.PosY + dy > brick.PosY) {
+      
+                    // There is a collision
+                    return true;
+                    
+                }
+                return false;
+            }
+        }
+        */
 
     /*
     main idea: with this algoritm we will find the best way to find the x point that we want to go
@@ -99,7 +124,7 @@ export class Finder{
                             
         let end_point = this.farPointPlayer();
         let start_point = { ...this.#bot }; 
-        //console.log(start_point);
+        console.log(start_point);
                             
         openList.push(start_point);
                             
@@ -183,5 +208,6 @@ export class Finder{
         // No path found
         return [];
     }
+
 
 }   
