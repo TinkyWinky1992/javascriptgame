@@ -3,13 +3,16 @@ export class Finder{
     #bot;
     #player
     #road_array;
+    #birck_array;
 
-    constructor (temp_bot, temp_player, Temproad_array)
+    constructor (temp_bot, temp_player, Temproad_array, temp_bricks)
     {
         this.#player = temp_player;
         
         this.#bot = temp_bot;
         this.#road_array = Temproad_array;
+        this.#birck_array = temp_bricks;
+        
     }
 
 
@@ -55,12 +58,14 @@ export class Finder{
     closePointsBot(sourcePosX, sourcePosY)
      {
         let close_points = [];
+        let close_brick = this.closeBrickBot(sourcePosX, sourcePosY);
         let distance = 0;
-      
+        //DistanceOf(sourcePos and close brick) + Distanceof(closeBrick and close road) = DistanceOf(sorcePos and close Road)
         for (let i = 0; i < this.#road_array.length; i++) {
           let road = this.#road_array[i];
+          
           distance = this.checkDistance(sourcePosX, sourcePosY, road.PosX, road.PosY);
-            
+          
           if (distance <= 20) 
           {
             close_points.push(road);  
@@ -71,6 +76,27 @@ export class Finder{
       }
     
 
+    closeBrickBot(sourcePosX, sourcePosY)
+    {
+        let close_brick = [];
+        let distance = 0;
+        //DistanceOf(sourcePos and close brick) + Distanceof(closeBrick and close road) = DistanceOf(sorcePos and close Road)
+        for (let i = 0; i < this.#birck_array.length; i++) {
+          let brick = this.#birck_array[i];
+          
+          distance = this.checkDistance(sourcePosX, sourcePosY, brick.PosX, brick.PosY);
+            
+          if (distance <= 20) 
+          {
+            close_brick.push(brick);  
+          }
+        }
+        
+        return close_brick;
+      }
+        
+ 
+
       checkminDistance( array) {
 
         array.sort();
@@ -78,7 +104,6 @@ export class Finder{
         let Current_road = array[0];
         return Current_road;
         }
-
 
     /*
     main idea: with this algoritm we will find the best way to find the x point that we want to go
@@ -99,7 +124,7 @@ export class Finder{
                             
         let end_point = this.farPointPlayer();
         let start_point = { ...this.#bot }; 
-        //console.log(start_point);
+        1
                             
         openList.push(start_point);
                             
@@ -143,6 +168,7 @@ export class Finder{
             // Add the current point to the closed list
             closeList.push(currentPoint);
                             
+            
             // Generate neighbors
             let neighbors = this.closePointsBot(currentPoint.PosX, currentPoint.PosY);
                             
@@ -183,5 +209,6 @@ export class Finder{
         // No path found
         return [];
     }
+
 
 }   
