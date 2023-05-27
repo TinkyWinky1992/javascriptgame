@@ -26,6 +26,7 @@ export class player
     draw_player(ctx)
     {
         this.#OnListen();
+        
         ctx.beginPath();
         ctx.fillStyle = "red";
         ctx.fillRect(this.PosX, this.PosY, this.#Height, this.#wdith);

@@ -45,7 +45,8 @@ function engine()
 
         for(var i = 0; i < MyBot_array.length; i++)
         {
-            MyBot_array[i].draw_bot(ctx);
+            MyBot_array[i].update(ctx);
+       
         }
 
 

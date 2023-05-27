@@ -1,14 +1,13 @@
-export class Finder{
+export class Finder
+{
     
     #bot;
-    #player
     #road_array;
     #birck_array;
 
-    constructor (temp_bot, temp_player, Temproad_array, temp_bricks)
+    constructor (temp_bot, Temproad_array, temp_bricks)
     {
-        this.#player = temp_player;
-        
+
         this.#bot = temp_bot;
         this.#road_array = Temproad_array;
         this.#birck_array = temp_bricks;
@@ -16,11 +15,9 @@ export class Finder{
     }
 
 
-    farPointPlayer()
+    farPoint()
     {
-        let distancePlayer = 0;
-        let distanceX = 0;
-        let distanceY = 0;
+        
         let farPoint = 0;
         let farDistancePoint = 0;
 
@@ -28,10 +25,10 @@ export class Finder{
         {
             let road = this.#road_array[i];
            
-            distanceX = Math.pow(this.#player.PosX - road.PosX + road.width, 2);
-            distanceY = Math.pow(this.#player.PosY - road.PosY + road.width, 2);
+            let distanceX = Math.pow(this.#bot.PosX - road.PosX + road.width, 2);
+            let distanceY = Math.pow(this.#bot.PosY - road.PosY + road.width, 2);
 
-            distancePlayer = Math.sqrt(distanceX + distanceY); 
+            let distancePlayer = Math.sqrt(distanceX + distanceY); 
             
             if(farDistancePoint < distancePlayer )
             {
@@ -66,7 +63,7 @@ export class Finder{
           
           distance = this.checkDistance(sourcePosX, sourcePosY, road.PosX, road.PosY);
           
-          if (distance <= 20) 
+          if (distance <= 20  )
           {
             close_points.push(road);  
           }
@@ -86,7 +83,7 @@ export class Finder{
           
           distance = this.checkDistance(sourcePosX, sourcePosY, brick.PosX, brick.PosY);
             
-          if (distance <= 20) 
+          if (distance <= 20 ) 
           {
             close_brick.push(brick);  
           }
@@ -122,9 +119,9 @@ export class Finder{
         let openList = [];
         let closeList = [];
                             
-        let end_point = this.farPointPlayer();
+        let end_point = this.farPoint();
         let start_point = { ...this.#bot }; 
-        1
+        console.log(start_point);
                             
         openList.push(start_point);
                             
