@@ -93,6 +93,8 @@ export class player
     
     #update()   
     {
+        
+        
         var dx = 0;
         var dy = 0;
 
@@ -166,6 +168,30 @@ export class player
         });
 
         this.#update();
+    }
+
+    correntRoad()
+    {
+        let Roads = this.area.getRoadArray();
+        let road = Roads[0];
+        let min_road = road;
+
+        let distance = Math.sqrt(Math.pow((this.PosX - road.PosX), 2) + Math.pow((this.PosY - road.PosY), 2));
+        for(var i = 1; i < Roads.length ; i++)
+        {
+            road = Roads[i];
+            
+            if(distance > Math.sqrt(Math.pow((this.PosX - road.PosX), 2) + Math.pow((this.PosY - road.PosY), 2)))
+            {
+                distance = Math.sqrt(Math.pow((this.PosX - road.PosX), 2) + Math.pow((this.PosY - road.PosY), 2));
+                min_road = Roads[i];
+            }
+                
+
+           
+                
+        }
+        return min_road;
     }
     
     

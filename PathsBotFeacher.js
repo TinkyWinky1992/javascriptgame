@@ -2,28 +2,43 @@ export class Finder
 {
     
     #bot;
-    #road_array;
-    #birck_array;
+    #road_array = [];
+    
+    #endPoints =[];
 
-    constructor (temp_bot, Temproad_array, temp_bricks)
+    constructor (temp_bot, Temproad_array)
     {
 
         this.#bot = temp_bot;
         this.#road_array = Temproad_array;
-        this.#birck_array = temp_bricks;
+
+
+        for(var i = 0; i < this.#road_array.length; i++)
+        {
+            var road = this.#road_array[i];
+            if((road.PosX == 20 && road.PosY == 20) ||
+                (road.PosX == 20 && road.PosY == 440) || 
+                (road.PosX == 760 && road.PosY == 440) || 
+                (road.PosX == 760 && road.PosY == 20) ||
+                (road.PosX == 340 && road.PosY == 440) ||
+                (road.PosX == 380 && road.PosY == 20))
+                {
+                    this.#endPoints.push(road);
+                }
+        }
+        console.log(this.#endPoints);
         
     }
 
-
+    //20 20, 20 440, 760 440, 760 20 
     farPoint()
     {
         
         let farPoint = 0;
         let farDistancePoint = 0;
 
-        for(var i = 0; i<this.#road_array.length; i++)
-        {
-            let road = this.#road_array[i];
+            let road = this.#endPoints[Math.floor(Math.random()* this.#endPoints.length)];
+       
            
             let distanceX = Math.pow(this.#bot.PosX - road.PosX + road.width, 2);
             let distanceY = Math.pow(this.#bot.PosY - road.PosY + road.width, 2);
@@ -36,7 +51,6 @@ export class Finder
                 farPoint = road;
                 
             }
-        }
                    
         return farPoint;
     }
@@ -55,9 +69,8 @@ export class Finder
     closePointsBot(sourcePosX, sourcePosY)
      {
         let close_points = [];
-        let close_brick = this.closeBrickBot(sourcePosX, sourcePosY);
         let distance = 0;
-        //DistanceOf(sourcePos and close brick) + Distanceof(closeBrick and close road) = DistanceOf(sorcePos and close Road)
+      
         for (let i = 0; i < this.#road_array.length; i++) {
           let road = this.#road_array[i];
           
@@ -72,25 +85,6 @@ export class Finder
         return close_points;
       }
     
-
-    closeBrickBot(sourcePosX, sourcePosY)
-    {
-        let close_brick = [];
-        let distance = 0;
-        //DistanceOf(sourcePos and close brick) + Distanceof(closeBrick and close road) = DistanceOf(sorcePos and close Road)
-        for (let i = 0; i < this.#birck_array.length; i++) {
-          let brick = this.#birck_array[i];
-          
-          distance = this.checkDistance(sourcePosX, sourcePosY, brick.PosX, brick.PosY);
-            
-          if (distance <= 20 ) 
-          {
-            close_brick.push(brick);  
-          }
-        }
-        
-        return close_brick;
-      }
         
  
 
@@ -105,14 +99,6 @@ export class Finder
     /*
     main idea: with this algoritm we will find the best way to find the x point that we want to go
     short exmplain: with recursion we use mathod to search good path for the bot.
-
-        1. we need to check if the bot in the point allready then he exit.
-        2. we need to check if the bot go far from the point then go back and check the other dircation 
-            that he can go.
-        2.1. if he didn't find good point that make the bot closer to the end point then
-            choose one of the optinal dirction can  keep the recursion as usual.
-
-
     */
     PathAlgorithm() 
     {
@@ -121,7 +107,7 @@ export class Finder
                             
         let end_point = this.farPoint();
         let start_point = { ...this.#bot }; 
-        console.log(start_point);
+        
                             
         openList.push(start_point);
                             

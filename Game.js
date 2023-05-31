@@ -26,8 +26,11 @@ MyBot_array.push(new bot(400, 20, map_game, player_one));
 
 
 
+
+
 function engine()
     { 
+        
         requestAnimationFrame(engine);
 
         ctx.fillStyle = "white";
@@ -45,13 +48,26 @@ function engine()
 
         for(var i = 0; i < MyBot_array.length; i++)
         {
-            MyBot_array[i].update(ctx);
-       
+            let bot = MyBot_array[i]
+            if(bot.isHuntingDown)
+            {
+                engineGameOver();
+                 
+            }
+                
+                
+            bot.update(ctx);   
+            
         }
-
-
         player_one.draw_player(ctx);
 
     }
 
 engine();
+
+function engineGameOver()
+{
+    
+    ctx.fillStyle = "white";
+    ctx.fillRect(0, 0, 800, 480);
+}
