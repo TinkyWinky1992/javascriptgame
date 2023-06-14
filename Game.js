@@ -23,6 +23,7 @@ MyBot_array.push(new bot(600, 340,  map_game, player_one));
 MyBot_array.push(new bot(580, 220, map_game, player_one));
 MyBot_array.push(new bot(400, 20, map_game, player_one));
 
+let isGameOver = false;
 
 
 
@@ -31,36 +32,42 @@ MyBot_array.push(new bot(400, 20, map_game, player_one));
 function engine()
     { 
         
-        requestAnimationFrame(engine);
-
-        ctx.fillStyle = "white";
-        ctx.fillRect(0, 0, 800, 480);
-    
-        for(var i = 0; i < arrayBrick.length; i++)
+        if(!isGameOver)
         {
-            arrayBrick[i].brick_drawing(ctx);  
-        }
+            requestAnimationFrame(engine);
 
-        for(var i = 0; i < arrayRoad.length; i++)
-        {
-            arrayRoad[i].road_drawing(ctx);
-        }   
-
-        for(var i = 0; i < MyBot_array.length; i++)
-        {
-            let bot = MyBot_array[i]
-            if(bot.isHuntingDown)
+            ctx.fillStyle = "white";
+            ctx.fillRect(0, 0, 800, 480);
+        
+            for(var i = 0; i < arrayBrick.length; i++)
             {
-                engineGameOver();
-                 
+                arrayBrick[i].brick_drawing(ctx);  
             }
-                
-                
-            bot.update(ctx);   
-            
+    
+            for(var i = 0; i < arrayRoad.length; i++)
+            {
+                arrayRoad[i].road_drawing(ctx);
+            }   
+    
+            for(var i = 0; i < MyBot_array.length; i++)
+            {
+                let bot = MyBot_array[i]
+    
+                    
+                    
+                bot.update(ctx);   
+                if(bot.isHuntingDown)
+                {
+                    isGameOver = true;
+                     
+                }
+            }
+            player_one.draw_player(ctx);
+    
         }
-        player_one.draw_player(ctx);
-
+        else
+            engineGameOver()
+       
     }
 
 engine();
